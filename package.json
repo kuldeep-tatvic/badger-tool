@@ -1,0 +1,32 @@
+{
+  "name": "zoho-client-portal-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.1",
+    "@mui/lab": "^5.0.0-alpha.160",
+    "@mui/material": "^5.15.1",
+    "axios": "^1.6.2",
+    "cookie": "^0.6.0",
+    "easy-peasy": "^6.0.4",
+    "next": "13.2.4",
+    "react": "18.2.0",
+    "react-cookie": "^6.1.1",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.49.2",
+    "react-query": "^3.39.3"
+  },
+  "devDependencies": {
+    "eslint": "8.56.0",
+    "eslint-config-next": "14.0.4"
+  }
+}
