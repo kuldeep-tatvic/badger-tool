@@ -1,8 +1,26 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+
+
+
 
 const Home = () => {
+
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      console.log("session_googlee_1", session);
+      router.push("/dashboard");
+    }
+  }, [session]);
+
+  console.log("session_googlee", session);
+
   return (
     <Container sx={{
       display: "flex",
@@ -70,6 +88,7 @@ const Home = () => {
               sx={{
                 backgroundColor: "white", // Google's brand color
                 color: "#10174F",
+                fontWeight: "600",
                 padding: "0.9rem 3rem",
                 fontSize: 18,
                 "&:hover": {
@@ -78,11 +97,13 @@ const Home = () => {
                 textTransform: "uppercase",
                 marginTop: "2rem",
               }}
+              onClick={() =>
+                // signOut()
+                signIn("google")
+              }
             >
               Sign in with Google
             </Button>
-
-
           </Stack>
         </Stack>
       </Box>

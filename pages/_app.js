@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { CookiesProvider } from "react-cookie";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { SessionProvider } from "next-auth/react";
+
 
 // MUI
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,9 +16,8 @@ import NavigationLoader from "components/navigationLoader";
 // store
 import ErrorBoundary from "components/errorBoundary";
 import Head from "next/head";
-import Home from "pages";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter();
   const initialRenderRef = useRef(true);
   const [queryClient] = useState(
@@ -50,13 +51,14 @@ function MyApp({ Component, pageProps }) {
       {loading && <NavigationLoader />}
       <CookiesProvider>
         <QueryClientProvider client={queryClient}>
-
-          <Head>
-            <title>Tatvic Badger</title>
-          </Head>
-          <ErrorBoundary>
-            <AuthenticatedComponent Component={Component} pageProps={pageProps} />
-          </ErrorBoundary>
+          <SessionProvider session={session}>
+            <Head>
+              <title>Tatvic Badger</title>
+            </Head>
+            <ErrorBoundary>
+              <AuthenticatedComponent Component={Component} pageProps={pageProps} />
+            </ErrorBoundary>
+          </SessionProvider>
         </QueryClientProvider>
       </CookiesProvider>
     </ThemeProvider>
@@ -64,7 +66,9 @@ function MyApp({ Component, pageProps }) {
 }
 
 function AuthenticatedComponent({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <Component {...pageProps} />
+  );
 }
 
 export default MyApp;
