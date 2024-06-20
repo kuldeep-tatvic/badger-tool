@@ -3,11 +3,53 @@ import ReportButton from "components/ReportButton";
 import SelectionComponent from "components/SelectionComponent";
 import HeaderComponent from "components/header";
 import { colors } from "constants/colors";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useQuery } from "react-query";
+import { fetchData, getAnalyticsAccount } from "@apis/analyticsAccounts";
+
 
 const Dashboard = () => {
 
     const [selectedReport, setSelectedReport] = useState("acquisition");
+    const { data: session } = useSession();
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+    const [pageToken, setPageToken] = useState("");
+
+    const {
+        isLoading, refetch, isFetching, isRefetching
+    } = useQuery(
+        "getAnalyticsAccountSummaries",
+        () => getAnalyticsAccount(session?.accessToken, 200, pageToken),
+        {
+            enabled: !!session?.accessToken, // Only run the query if session is defined
+            retry: false,
+            onSuccess: (responseData) => {
+
+                console.log("getAnalyticsAccountSummaries:", JSON.stringify(responseData));
+
+                setData(prevData => [
+                    ...(Array.isArray(prevData) ? prevData : []),
+                    ...(responseData.accountSummaries ? responseData.accountSummaries : [])
+                ]);
+                if (responseData.nextPageToken) {
+                    setPageToken(responseData.nextPageToken);
+                } else {
+                    setPageToken("");
+                }
+            },
+            onError: (error) => {
+                console.log("getAnalyticsAccountSummaries error:", JSON.stringify(error));
+            }
+        });
+
+    // Refetch data if pageToken changes
+    useEffect(() => {
+        if (pageToken) {
+            refetch();
+        }
+    }, [pageToken, refetch]);
 
     return (
         <Container sx={{
@@ -49,15 +91,17 @@ const Dashboard = () => {
                     />
                 </Box>
 
-                <Paper elevation={3} sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: colors.white,
-                    marginTop: 1,
-                    marginLeft: 2,
-                    marginRight: 2,
-                }}>
+                <Paper
+                    elevation={3}
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: colors.white,
+                        marginTop: 1,
+                        marginLeft: 2,
+                        marginRight: 2,
+                    }}>
                     <SelectionComponent />
                 </Paper>
             </Stack>

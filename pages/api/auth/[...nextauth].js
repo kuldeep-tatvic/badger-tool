@@ -7,20 +7,27 @@ export default NextAuth({
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            authorization: {
+                params: {
+                    scope: "https://www.googleapis.com/auth/analytics https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/analytics.manage.users.readonly",
+                },
+            },
         }),
     ],
     callbacks: {
         async session({ session, token, user }) {
             // Add user id to session
             session.user.id = token.id;
-
-            // console.log("google_session", session);
+            session.accessToken = token.accessToken;
 
             return session;
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user, account }) {
             if (user) {
                 token.id = user.id;
+            }
+            if (account) {
+                token.accessToken = account.access_token;
             }
             return token;
         },

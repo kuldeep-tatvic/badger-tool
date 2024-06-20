@@ -1,46 +1,46 @@
-{
-    "extends": "next/core-web-vitals",
-    "rules": {
-        "react/no-unescaped-entities": "off",
-        "react-hooks/exhaustive-deps": "off",
-        "semi": [
-            "warn",
-            "always"
-        ],
-        "quotes": [
-            "warn",
-            "double"
-        ],
-        "prefer-const": "warn",
-        "no-unused-vars": [
-            "warn",
-            {
-                "vars": "all",
-                "args": "after-used",
-                "ignoreRestSiblings": false
-            }
-        ],
-        "no-console": "warn",
-        "require-await": [
-            "warn"
-        ],
-        "eqeqeq": [
-            "warn",
-            "always"
-        ],
-        "no-var": "error",
-        "no-multiple-empty-lines": [
-            "warn",
-            {
-                "max": 2,
-                "maxEOF": 1
-            }
-        ],
-        "camelcase": [
-            "warn",
-            {
-                "properties": "always"
-            }
-        ]
-    }
-}
+// {
+//     "extends": "next/core-web-vitals",
+//     "rules": {
+//         "react/no-unescaped-entities": "off",
+//         "react-hooks/exhaustive-deps": "off",
+//         "semi": [
+//             "warn",
+//             "always"
+//         ],
+//         "quotes": [
+//             "warn",
+//             "double"
+//         ],
+//         "prefer-const": "warn",
+//         "no-unused-vars": [
+//             "warn",
+//             {
+//                 "vars": "all",
+//                 "args": "after-used",
+//                 "ignoreRestSiblings": false
+//             }
+//         ],
+//         "no-console": "warn",
+//         "require-await": [
+//             "warn"
+//         ],
+//         "eqeqeq": [
+//             "warn",
+//             "always"
+//         ],
+//         "no-var": "error",
+//         "no-multiple-empty-lines": [
+//             "warn",
+//             {
+//                 "max": 2,
+//                 "maxEOF": 1
+//             }
+//         ],
+//         "camelcase": [
+//             "warn",
+//             {
+//                 "properties": "always"
+//             }
+//         ]
+//     }
+// }

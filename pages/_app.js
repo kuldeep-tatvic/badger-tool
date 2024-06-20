@@ -20,6 +20,8 @@ import Head from "next/head";
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter();
   const initialRenderRef = useRef(true);
+
+  // For the use of React-Query
   const [queryClient] = useState(
     () =>
       new QueryClient({

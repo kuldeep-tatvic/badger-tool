@@ -4,15 +4,13 @@ import React, { useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-
-
-
 const Home = () => {
 
   const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
+
     if (session) {
       console.log("session_googlee_1", session);
       router.push("/dashboard");
