@@ -1,13 +1,15 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
-import Menu from '@mui/material/Menu';
+import { Menu, Box, Stack, Typography, Divider, ListItem, ListItemText, ListItemIcon, IconButton, Button } from '@mui/material';
 import { colors } from "constants/colors";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import toast from 'react-hot-toast';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'; // Ensure you have imported this icon
+import CheckIcon from '@mui/icons-material/Check'; // Ensure you have imported this icon
+
 
 
 const HeaderComponent = ({ onAccountHandler, data }) => {
@@ -38,11 +40,11 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
     };
 
     const handleAccountClick = (event, accountId) => {
-        console.log("on click item", JSON.stringify(data));
+        console.log("on click item", JSON.stringify(accountId));
 
         const account = data.find((account) => account.account === `accounts/${accountId}`);
 
-        console.log("account", account);
+        console.log("accountttttttttttttt", data);
 
         if (account) {
             const properties = Array.isArray(account.propertySummaries)
@@ -241,14 +243,13 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
                             <Box sx={{
                                 position: "sticky",
                                 top: 0,
-                                backgroundColor: "inherit", // Maintain the background color when sticky
+                                backgroundColor: "inherit",
                                 zIndex: 1,
                                 background: "white"
                             }}>
                                 <Typography
                                     sx={{
                                         padding: "1rem 1rem",
-
                                     }}
                                     variant="inherit"
                                     color={colors.primary}>Analytics Accounts</Typography>
@@ -262,30 +263,36 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
                                 />
                             </Box>
                             <Box sx={{
-                                padding: "1rem 1rem",
+                                padding: "1rem 0rem 1rem 0rem",
                                 marginRight: "0.1rem",
+
                             }}>
                                 {
                                     data?.map((item) => {
-                                        const accountId = item.account.split('/')[1];
+                                        const accountIdd = item.account.split('/')[1];
                                         return (
-                                            <Box
+                                            <Button
                                                 key={item.id}
+                                                onClick={(event) => handleAccountClick(event, accountIdd)}
                                                 sx={{
-                                                    padding: "0.7rem 0rem",
-                                                }}
-                                                onClick={(event) => handleAccountClick(event, accountId)}
-                                            >
-                                                <Typography
-                                                    variant="inherit"
-                                                    color={colors.primary}
-                                                >{item.displayName}</Typography>
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    padding: "0.7rem 1rem",
+                                                    width: '100%',
+                                                    textAlign: 'left',
+                                                    backgroundColor: accountId === accountIdd ? colors.lightGray : 'transparent',
+                                                    '&:hover': {
+                                                        backgroundColor: colors.lightGray,
+                                                    },
 
-                                                <Typography
-                                                    variant="subtitle1"
-                                                    color={colors.subTitleText}
-                                                >{accountId}</Typography>
-                                            </Box>
+                                                }}
+                                            >
+                                                <ListItemText
+                                                    primary={<Typography variant="inherit" color={colors.primary}>{item.displayName}</Typography>}
+                                                    secondary={<Typography variant="subtitle1" color={colors.subTitleText}>{accountId}</Typography>}
+                                                />
+                                                {accountId === accountIdd && <ListItemIcon><ArrowRightIcon color="primary" /></ListItemIcon>}
+                                            </Button>
                                         )
                                     })
                                 }
@@ -301,34 +308,38 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
                                     position: "sticky",
                                     zIndex: 1,
                                     top: 0,
-                                    marginBottom: "1rem",
+                                    marginBottom: "1.1rem",
                                 }}
                             >Properties & Apps</Typography>
 
                             {
                                 selectedProperties?.map((item) => {
-                                    const propertyID = item.property.split('/')[1];
+                                    const propertyIDD = item.property.split('/')[1];
                                     return (
-                                        <Box
+                                        <Button
                                             key={item.id}
+                                            onClick={(event) => handlePropertyClick(event, propertyIDD)}
                                             sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
                                                 padding: "0.7rem 1rem",
+                                                width: '100%',
+                                                textAlign: 'left',
+                                                backgroundColor: propertyId === propertyIDD ? colors.lightGray : 'transparent',
+                                                '&:hover': {
+                                                    backgroundColor: colors.lightGray,
+                                                },
                                             }}
-                                            onClick={(event) => handlePropertyClick(event, propertyID)}
                                         >
-                                            <Typography
-                                                variant="inherit"
-                                                color={colors.primary}
-                                            >{item.displayName}</Typography>
-                                            <Typography
-                                                variant="subtitle1"
-                                                color={colors.subTitleText}
-                                            >{propertyID}</Typography>
-                                        </Box>
+                                            <ListItemText
+                                                primary={<Typography variant="inherit" color={colors.primary}>{item.displayName}</Typography>}
+                                                secondary={<Typography variant="subtitle1" color={colors.subTitleText}>{propertyIDD}</Typography>}
+                                            />
+                                            {propertyId === propertyIDD && <ListItemIcon><ArrowRightIcon color="primary" /></ListItemIcon>}
+                                        </Button>
                                     )
                                 })
                             }
-
                         </Stack>
                     </Stack>
                 </Box>
