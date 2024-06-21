@@ -70,7 +70,11 @@ const Dashboard = () => {
             },
         }}>
             <Stack direction={"column"} width={"100%"}>
-                <HeaderComponent onAccountHandler={accountsClickHandler} />
+                <HeaderComponent
+                    onAccountHandler={accountsClickHandler}
+                    session={session}
+                    data={data}
+                />
                 <Box sx={{
                     flexDirection: "row",
                     display: "flex",
