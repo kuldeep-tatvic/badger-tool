@@ -1,12 +1,12 @@
+import { getAnalyticsAccount } from "@apis/analyticsAccounts";
 import { Box, Container, Paper, Stack } from "@mui/material";
 import ReportButton from "components/ReportButton";
 import SelectionComponent from "components/SelectionComponent";
 import HeaderComponent from "components/header";
 import { colors } from "constants/colors";
-import React, { useState, useEffect } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { fetchData, getAnalyticsAccount } from "@apis/analyticsAccounts";
 
 
 const Dashboard = () => {
@@ -16,6 +16,10 @@ const Dashboard = () => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [pageToken, setPageToken] = useState("");
+
+    const accountsClickHandler = () => {
+        console.log("view clicked")
+    }
 
     const {
         isLoading, refetch, isFetching, isRefetching
@@ -66,7 +70,7 @@ const Dashboard = () => {
             },
         }}>
             <Stack direction={"column"} width={"100%"}>
-                <HeaderComponent />
+                <HeaderComponent onAccountHandler={accountsClickHandler} />
                 <Box sx={{
                     flexDirection: "row",
                     display: "flex",
