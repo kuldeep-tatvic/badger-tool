@@ -23,7 +23,9 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
     const [selectedProperties, setSelectedProperties] = useState([]);
 
     const [accountId, setAccountId] = useState("");
+    const [accountName, setAccountName] = useState("");
     const [propertyId, setPropertyId] = useState("");
+    const [propertyName, setPropertyName] = useState("");
 
 
     const handleDropdownVisibility = (event) => {
@@ -40,11 +42,8 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
     };
 
     const handleAccountClick = (event, accountId) => {
-        console.log("on click item", JSON.stringify(accountId));
 
         const account = data.find((account) => account.account === `accounts/${accountId}`);
-
-        console.log("accountttttttttttttt", data);
 
         if (account) {
             const properties = Array.isArray(account.propertySummaries)
@@ -58,6 +57,9 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
             setSelectedProperties(properties);
 
             setAccountId(accountId);
+            setAccountName(account.displayName);
+            setPropertyName("")
+
 
             console.log("selected properties", properties);
             // toast.success("Account selected");
@@ -66,12 +68,11 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
             toast.error("Account not found");
 
         }
-
-        // setAnchorEl(event.currentTarget);
     };
 
-    const handlePropertyClick = async (event, propId) => {
+    const handlePropertyClick = async (event, propId, propertyName) => {
         setPropertyId(propId);
+        setPropertyName(propertyName);
         console.log("on click property", propertyId);
     };
 
@@ -120,12 +121,23 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
                                     <Typography
                                         variant="subtitle2"
                                         fontSize={"12px"}
-                                        sx={{ marginTop: "3px" }}
-                                    >ICICI Lombard</Typography>
+                                        sx={{
+                                            marginTop: "3px",
+                                            width: "4.2rem",
+                                        }}
+                                    >All Accounts</Typography>
                                     <KeyboardArrowRightIcon />
                                     <Typography
-                                        sx={{ marginTop: "3px" }}
-                                        variant="subtitle2" fontSize={"12px"}>ICICI Lombard</Typography>
+                                        sx={{
+                                            marginTop: "3px",
+                                            width: "6.2rem",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            whiteSpace: "nowrap",
+                                        }}
+                                        variant="subtitle2" fontSize={"12px"}>
+                                        {accountId ? accountName : "Select Account"}
+                                    </Typography>
                                 </Stack>
 
                                 <Stack direction={"row"} sx={{
@@ -135,8 +147,12 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
                                 }}>
                                     <Typography variant="subtitle1" sx={{
                                         color: "#2A4759",
-                                        fontSize: 14
-                                    }}>[UA] ICICI BIZ Health - GA4</Typography>
+                                        fontSize: 14,
+                                        width: "11rem",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
+                                    }}>{propertyName ? propertyName : "Select Property"}</Typography>
                                     <Box
                                         sx={{
                                             display: "flex",
@@ -315,10 +331,11 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
                             {
                                 selectedProperties?.map((item) => {
                                     const propertyIDD = item.property.split('/')[1];
+                                    const propertyName = item.displayName;
                                     return (
                                         <Button
                                             key={item.id}
-                                            onClick={(event) => handlePropertyClick(event, propertyIDD)}
+                                            onClick={(event) => handlePropertyClick(event, propertyIDD, propertyName)}
                                             sx={{
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
