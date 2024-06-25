@@ -10,8 +10,6 @@ import toast from 'react-hot-toast';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'; // Ensure you have imported this icon
 import CheckIcon from '@mui/icons-material/Check'; // Ensure you have imported this icon
 
-
-
 const HeaderComponent = ({ onAccountHandler, data }) => {
 
     console.log("header data", data);

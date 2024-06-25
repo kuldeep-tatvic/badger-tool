@@ -10,6 +10,8 @@ const colors = {
     darkBlue: "#081028",
     grayBorder: "rgba(255, 255, 255, 0.4)",
     lightGray: "#F8F8F9",
+    antiFlashWhite: "#EEEFF5",
+    lightBlueBg: "#F2F3F8"
 };
 
 
