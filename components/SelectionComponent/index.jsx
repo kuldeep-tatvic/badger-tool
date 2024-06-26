@@ -108,7 +108,11 @@ const FilterComponent = () => {
 
                 // Update available dimensions and metrics
                 setAvailableDimensions(rows[rowKey]);
-                setAvailableMetrics(selectedDimensions.flatMap(dimension => dimensionMetricsMap[dimension] || []));
+
+                // Collect metrics from all selected dimensions and remove duplicates
+                const allMetrics = selectedDimensions.flatMap(dimension => dimensionMetricsMap[dimension] || []);
+                const uniqueMetrics = [...new Set(allMetrics)];
+                setAvailableMetrics(uniqueMetrics);
             } else {
 
                 // Reset to show all dimensions and no metrics if no dimensions are selected

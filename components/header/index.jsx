@@ -12,7 +12,7 @@ import CheckIcon from '@mui/icons-material/Check'; // Ensure you have imported t
 
 const HeaderComponent = ({ onAccountHandler, data }) => {
 
-    console.log("header data", data);
+    console.log("header data", JSON.stringify(data));
 
     const { data: session } = useSession();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -303,7 +303,7 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
                                             >
                                                 <ListItemText
                                                     primary={<Typography variant="inherit" color={colors.primary}>{item.displayName}</Typography>}
-                                                    secondary={<Typography variant="subtitle1" color={colors.subTitleText}>{accountId}</Typography>}
+                                                    secondary={<Typography variant="subtitle1" color={colors.subTitleText}>{accountIdd}</Typography>}
                                                 />
                                                 {accountId === accountIdd && <ListItemIcon><ArrowRightIcon color="primary" /></ListItemIcon>}
                                             </Button>
