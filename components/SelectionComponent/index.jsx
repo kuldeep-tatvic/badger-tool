@@ -1,22 +1,137 @@
 import { useState } from 'react';
-import { Box, Button, TextField, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { Box, Button, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import CustomDateRangePicker from 'components/date/DateRangePicker';
+
+const rows = {
+    row1: [
+        'First User Channel Grouping', 'First User Source', 'First User Medium',
+        'First User Source/Medium', 'First User Campaign'
+    ],
+    row2: [
+        'Session Channel Grouping', 'Session Source', 'Session Medium',
+        'Session Source/Medium', 'Session Campaign'
+    ],
+    row3: [
+        'Source', 'Medium', 'Source/Medium'
+    ]
+};
+
+const dimensionMetricsMap = {
+    'First User Channel Grouping': [
+        'New users', 'engaged sessions', 'engagement rate', 'engaged sessions per user',
+        'avg engagement time', 'event count', 'revenue', 'key events', 'key event rate',
+        'bounce rate', 'avg session duration', 'views', 'entrances', 'exits'
+    ],
+    'First User Source': [
+        'New users', 'engaged sessions', 'engagement rate', 'engaged sessions per user',
+        'avg engagement time', 'event count', 'revenue', 'key events', 'key event rate',
+        'bounce rate', 'avg session duration', 'views', 'entrances', 'exits'
+    ],
+    'First User Medium': [
+        'New users', 'engaged sessions', 'engagement rate', 'engaged sessions per user',
+        'avg engagement time', 'event count', 'revenue', 'key events', 'key event rate',
+        'bounce rate', 'avg session duration', 'views', 'entrances', 'exits'
+    ],
+    'First User Source/Medium': [
+        'New users', 'engaged sessions', 'engagement rate', 'engaged sessions per user',
+        'avg engagement time', 'event count', 'revenue', 'key events', 'key event rate',
+        'bounce rate', 'avg session duration', 'views', 'entrances', 'exits'
+    ],
+    'First User Campaign': [
+        'New users', 'engaged sessions', 'engagement rate', 'engaged sessions per user',
+        'avg engagement time', 'event count', 'revenue', 'key events', 'key event rate',
+        'bounce rate', 'avg session duration', 'views', 'entrances', 'exits'
+    ],
+    'Session Channel Grouping': [
+        'Users', 'Sessions', 'Engaged Sessions', 'Avg engagement time per session',
+        'engaged session per user', 'events per session', 'event count', 'revenue',
+        'key events', 'key event rate', 'bounce rate', 'avg session duration', 'views',
+        'entrances', 'exits'
+    ],
+    'Session Source': [
+        'Users', 'Sessions', 'Engaged Sessions', 'Avg engagement time per session',
+        'engaged session per user', 'events per session', 'event count', 'revenue',
+        'key events', 'key event rate', 'bounce rate', 'avg session duration', 'views',
+        'entrances', 'exits'
+    ],
+    'Session Medium': [
+        'Users', 'Sessions', 'Engaged Sessions', 'Avg engagement time per session',
+        'engaged session per user', 'events per session', 'event count', 'revenue',
+        'key events', 'key event rate', 'bounce rate', 'avg session duration', 'views',
+        'entrances', 'exits'
+    ],
+    'Session Source/Medium': [
+        'Users', 'Sessions', 'Engaged Sessions', 'Avg engagement time per session',
+        'engaged session per user', 'events per session', 'event count', 'revenue',
+        'key events', 'key event rate', 'bounce rate', 'avg session duration', 'views',
+        'entrances', 'exits'
+    ],
+    'Session Campaign': [
+        'Users', 'Sessions', 'Engaged Sessions', 'Avg engagement time per session',
+        'engaged session per user', 'events per session', 'event count', 'revenue',
+        'key events', 'key event rate', 'bounce rate', 'avg session duration', 'views',
+        'entrances', 'exits'
+    ],
+    'Source': [
+        'Active users', 'total users', 'event value', 'key events', 'purchase revenue'
+    ],
+    'Medium': [
+        'Active users', 'total users', 'event value', 'key events', 'purchase revenue'
+    ],
+    'Source/Medium': [
+        'Active users', 'total users', 'event value', 'key events', 'purchase revenue'
+    ],
+};
 
 const FilterComponent = () => {
     const [dimensions, setDimensions] = useState([]);
-    const [metrics, setMetrics] = useState([]);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [availableDimensions, setAvailableDimensions] = useState(Object.values(rows).flat());
+    const [availableMetrics, setAvailableMetrics] = useState([]);
+    const [selectedMetrics, setSelectedMetrics] = useState([]);
 
     const handleDimensionChange = (event) => {
-        setDimensions(event.target.value);
+        const selectedDimensions = event.target.value;
+        if (selectedDimensions.includes('None')) {
+            // Clear all selections
+            setDimensions([]);
+            setAvailableDimensions(Object.values(rows).flat());
+            setAvailableMetrics([]);
+            setSelectedMetrics([]);
+        } else {
+            setDimensions(selectedDimensions);
+            if (selectedDimensions.length > 0) {
+
+                // Find the row containing the selected dimensions
+                const rowKey = Object.keys(rows).find(row =>
+                    rows[row].some(dimension => selectedDimensions.includes(dimension))
+                );
+
+                // Update available dimensions and metrics
+                setAvailableDimensions(rows[rowKey]);
+                setAvailableMetrics(selectedDimensions.flatMap(dimension => dimensionMetricsMap[dimension] || []));
+            } else {
+
+                // Reset to show all dimensions and no metrics if no dimensions are selected
+                setAvailableDimensions(Object.values(rows).flat());
+                setAvailableMetrics([]);
+            }
+        }
     };
 
     const handleMetricsChange = (event) => {
-        setMetrics(event.target.value);
+        if (event.target.value.includes('None')) {
+            setSelectedMetrics([]);
+        } else {
+            setSelectedMetrics(event.target.value);
+        }
     };
+
+    // Date range filter
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
+    const [compareStartDate, setCompareStartDate] = useState(null);
+    const [compareEndDate, setCompareEndDate] = useState(null);
 
     return (
         <Box display="flex" alignItems="center" justifyContent={"center"} p={2} sx={{ width: "100%" }}>
@@ -37,13 +152,12 @@ const FilterComponent = () => {
                         label="Select the Dimensions"
                         multiple
                     >
-                        <MenuItem value="">
+                        <MenuItem value="None">
                             <em>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>Dimension 1</MenuItem>
-                        <MenuItem value={20}>Dimension 2</MenuItem>
-                        <MenuItem value={30}>Dimension 3</MenuItem>
-                        <MenuItem value={40}>Dimension 4</MenuItem>
+                        {availableDimensions.map((dim) => (
+                            <MenuItem key={dim} value={dim}>{dim}</MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
 
@@ -51,47 +165,32 @@ const FilterComponent = () => {
                     <InputLabel id="metrics-label">Select the Metrics</InputLabel>
                     <Select
                         labelId="metrics-label"
-                        value={metrics}
+                        value={selectedMetrics}
                         onChange={handleMetricsChange}
                         label="Select the Metrics"
                         multiple
                     >
-                        <MenuItem value="">
+                        <MenuItem value="None">
                             <em>None</em>
                         </MenuItem>
-                        <MenuItem value={10}>Metric 1</MenuItem>
-                        <MenuItem value={20}>Metric 2</MenuItem>
-                        <MenuItem value={30}>Metric 3</MenuItem>
-                        <MenuItem value={40}>Metric 4</MenuItem>
+                        {availableMetrics.map((metric) => (
+                            <MenuItem key={metric} value={metric}>{metric}</MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
 
                 <Box display="flex" alignItems="center" gap={2}>
-                    {/* <DatePicker
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    selectsStart
-                    startDate={startDate}
-                    endDate={endDate}
-                    placeholderText="Start Date"
-                    customInput={<TextField label="Start Date" variant="outlined" />}
-                /> */}
-                    {/* <Box sx={{ mx: 2 }}> to </Box> */}
-                    {/* <DatePicker
-                        selected={endDate}
-                        onChange={(date) => setEndDate(date)}
-                        selectsEnd
+                    <CustomDateRangePicker
                         startDate={startDate}
                         endDate={endDate}
-                        minDate={startDate}
-                        placeholderText="End Date"
-                        customInput={<TextField label="End Date" variant="outlined" />}
-                    /> */}
-
-                    <CustomDateRangePicker />
-
+                        setStartDate={setStartDate}
+                        setEndDate={setEndDate}
+                        compareStartDate={compareStartDate}
+                        compareEndDate={compareEndDate}
+                        setCompareStartDate={setCompareStartDate}
+                        setCompareEndDate={setCompareEndDate}
+                    />
                 </Box>
-
             </Box>
             <Button sx={{ marginLeft: 'auto' }} variant="contained" color="primary">
                 Filter

@@ -111,6 +111,7 @@ const Dashboard = () => {
                         marginRight: 2,
                     }}>
                     <SelectionComponent />
+
                 </Paper>
             </Stack>
         </Container>

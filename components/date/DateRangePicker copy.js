@@ -1,30 +1,19 @@
 import React, { useState, useRef } from "react";
-import DatePicker, { registerLocale } from "react-datepicker";
-import enGb from 'date-fns/locale/en-GB';
+import DatePicker from "react-datepicker";
 import TextField from "@mui/material/TextField";
 import Popover from "@mui/material/Popover";
 import Switch from "@mui/material/Switch";
-import { Box, Button, Typography, List } from "@mui/material";
+import { Box, Button, Typography, List, } from "@mui/material";
 
 import "react-datepicker/dist/react-datepicker.css";
 import { colors } from "constants/colors";
 import DateRangeOption from "components/dateRangeOptions/DateRangeOptions";
-import styles from "./CustomDateRangePicker.module.css"; // Import the CSS module
 
-registerLocale('en-GB', enGb);
-
-const CustomDateRangePicker = ({
-    startDate,
-    endDate,
-    setStartDate,
-    setEndDate,
-    compareStartDate,
-    compareEndDate,
-    setCompareStartDate,
-    setCompareEndDate
-}) => {
+const CustomDateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [isCompared, setIsCompared] = useState(false);
+    const [compareStartDate, setCompareStartDate] = useState(null);
+    const [compareEndDate, setCompareEndDate] = useState(null);
     const inputRef = useRef(null);
 
     const handleClick = (event) => {
@@ -38,15 +27,6 @@ const CustomDateRangePicker = ({
     const open = Boolean(anchorEl);
     const id = open ? "date-range-popover" : undefined;
 
-    const [highlightWithRanges, setHighlightWithRanges] = useState([
-        {
-            "highlighted-custom-1": [startDate, endDate],
-        },
-        {
-            "highlighted-custom-2": [compareStartDate, compareEndDate],
-        },
-    ]);
-
     return (
         <>
             <TextField
@@ -59,9 +39,9 @@ const CustomDateRangePicker = ({
                         : ""
                 }
                 placeholder="Date Range"
-                size="medium"
+                size="small"
                 sx={{
-                    "&.MuiInputBase-input::placeholder": {
+                    "& .MuiInputBase-input::placeholder": {
                         opacity: 1,
                     },
                 }}
@@ -202,53 +182,51 @@ const CustomDateRangePicker = ({
                                 <Switch checked={isCompared} onChange={() => setIsCompared(!isCompared)} />
                             </Box>
 
-                            {isCompared && (
-                                <List sx={{
-                                    padding: "0.5rem 1rem",
-                                    background: "white"
-                                }}>
-                                    <DateRangeOption
-                                        onClick={() => {
-                                            // setCompareStartDate(new Date());
-                                            // setCompareEndDate(new Date());
-                                        }}
-                                    >
-                                        Preceding period (match day of week)
-                                    </DateRangeOption>
-                                    <DateRangeOption
-                                        onClick={() => {
-                                            // setCompareStartDate(new Date());
-                                            // setCompareEndDate(new Date());
-                                        }}
-                                    >
-                                        Same period last year (match day of week)
-                                    </DateRangeOption>
-                                    <DateRangeOption
-                                        onClick={() => {
-                                            // setCompareStartDate(new Date());
-                                            // setCompareEndDate(new Date());
-                                        }}
-                                    >
-                                        Preceding period
-                                    </DateRangeOption>
-                                    <DateRangeOption
-                                        onClick={() => {
-                                            // setCompareStartDate(new Date());
-                                            // setCompareEndDate(new Date());
-                                        }}
-                                    >
-                                        Same period last year
-                                    </DateRangeOption>
-                                    <DateRangeOption
-                                        onClick={() => {
-                                            // setCompareStartDate(new Date());
-                                            // setCompareEndDate(new Date());
-                                        }}
-                                    >
-                                        Custom
-                                    </DateRangeOption>
-                                </List>
-                            )}
+                            <List sx={{
+                                padding: "0.5rem 1rem",
+                                background: "white"
+                            }}>
+                                <DateRangeOption
+                                    onClick={() => {
+                                        // setStartDate(new Date());
+                                        // setEndDate(new Date());
+                                    }}
+                                >
+                                    Preceding period (match day of week)
+                                </DateRangeOption>
+                                <DateRangeOption
+                                    onClick={() => {
+                                        // setStartDate(new Date());
+                                        // setEndDate(new Date());
+                                    }}
+                                >
+                                    Same period last year (match day of week)
+                                </DateRangeOption>
+                                <DateRangeOption
+                                    onClick={() => {
+                                        // setStartDate(new Date());
+                                        // setEndDate(new Date());
+                                    }}
+                                >
+                                    Preceding period
+                                </DateRangeOption>
+                                <DateRangeOption
+                                    onClick={() => {
+                                        // setStartDate(new Date());
+                                        // setEndDate(new Date());
+                                    }}
+                                >
+                                    Same period last year
+                                </DateRangeOption>
+                                <DateRangeOption
+                                    onClick={() => {
+                                        // setStartDate(new Date());
+                                        // setEndDate(new Date());
+                                    }}
+                                >
+                                    Custom
+                                </DateRangeOption>
+                            </List>
                         </Box>
                         <Box width="55%">
                             <Box sx={{
@@ -299,6 +277,8 @@ const CustomDateRangePicker = ({
                                         mb={1}
                                         variant="inherit"
                                         fontWeight="bold">Compare</Typography>
+
+
                                     <Box sx={{
                                         flexDirection: "row",
                                         display: "flex",
@@ -311,20 +291,7 @@ const CustomDateRangePicker = ({
                                             label="Compare Start Date"
                                             type="date"
                                             value={compareStartDate ? compareStartDate.toISOString().substr(0, 10) : ''}
-                                            // onChange={(e) => setCompareStartDate(new Date(e.target.value))}
-                                            onChange={(e) => {
-                                                const newCompareStartDate = new Date(e.target.value);
-                                                console.log(newCompareStartDate);
-                                                setCompareStartDate(newCompareStartDate);
-                                                setHighlightWithRanges([
-                                                    {
-                                                        "highlighted-custom-1": [startDate, endDate],
-                                                    },
-                                                    {
-                                                        "highlighted-custom-2": [newCompareStartDate, compareEndDate],
-                                                    },
-                                                ]);
-                                            }}
+                                            onChange={(e) => setCompareStartDate(new Date(e.target.value))}
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
@@ -337,19 +304,7 @@ const CustomDateRangePicker = ({
                                             label="Compare End Date"
                                             type="date"
                                             value={compareEndDate ? compareEndDate.toISOString().substr(0, 10) : ''}
-                                            // onChange={(e) => setCompareEndDate(new Date(e.target.value))}
-                                            onChange={(e) => {
-                                                const newCompareEndDate = new Date(e.target.value);
-                                                setCompareEndDate(newCompareEndDate);
-                                                setHighlightWithRanges([
-                                                    {
-                                                        "highlighted-custom-1": [startDate, endDate],
-                                                    },
-                                                    {
-                                                        "highlighted-custom-2": [compareStartDate, newCompareEndDate],
-                                                    },
-                                                ]);
-                                            }}
+                                            onChange={(e) => setCompareEndDate(new Date(e.target.value))}
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
@@ -362,86 +317,17 @@ const CustomDateRangePicker = ({
                                 </>
                             )}
 
-                            <Box sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                padding: "0.5rem 1rem",
-                                width: "100%",
-                            }}>
-                                <DatePicker
-                                    selectsRange
-                                    style={{
-                                        width: 500, // increase width
-                                        height: 250, // increase height
-                                    }}
-
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    onChange={(dates) => {
-                                        const [start, end] = dates;
-                                        setStartDate(start);
-                                        setEndDate(end);
-                                    }}
-                                    inline
-                                    highlightDates={highlightWithRanges}
-                                    locale="en-GB"
-                                    renderDayContents={(day, date) => {
-                                        const isHighlight1 = startDate && endDate && date >= startDate && date <= endDate;
-                                        const isHighlight2 = compareStartDate && compareEndDate && date >= compareStartDate && date <= compareEndDate;
-                                        if (isHighlight1 && isHighlight2) {
-                                            return (
-                                                <span
-                                                    style={{
-                                                        backgroundColor: 'black', // override with compare color
-                                                        borderRadius: '22%',
-                                                        display: 'inline-block',
-                                                        width: '1.8rem',
-                                                        height: '2rem',
-                                                        lineHeight: '2rem',
-                                                        textAlign: 'center',
-                                                    }}
-                                                >
-                                                    {day}
-                                                </span>
-                                            );
-                                        } else if (isHighlight1) {
-                                            return (
-                                                <span
-                                                    style={{
-                                                        // backgroundColor: 'lightblue',
-                                                        // borderRadius: '50%',
-                                                        // display: 'inline-block',
-                                                        // width: '2rem',
-                                                        // height: '2rem',
-                                                        // lineHeight: '2rem',
-                                                        // textAlign: 'center',
-                                                    }}
-                                                >
-                                                    {day}
-                                                </span>
-                                            );
-                                        } else if (isHighlight2) {
-                                            return (
-                                                <span
-                                                    style={{
-                                                        backgroundColor: 'lightgreen',
-                                                        borderRadius: '15%',
-                                                        display: 'inline-block',
-                                                        width: '1.7rem',
-                                                        height: '1.9rem',
-                                                        lineHeight: '2rem',
-                                                        textAlign: 'center',
-                                                    }}
-                                                >
-                                                    {day}
-                                                </span>
-                                            );
-                                        } else {
-                                            return <span>{day}</span>;
-                                        }
-                                    }}
-                                />
-                            </Box>
+                            <DatePicker
+                                selectsRange
+                                startDate={startDate}
+                                endDate={endDate}
+                                onChange={(dates) => {
+                                    const [start, end] = dates;
+                                    setStartDate(start);
+                                    setEndDate(end);
+                                }}
+                                inline
+                            />
                         </Box>
                     </Box>
                     <Box mt={2} display="flex" justifyContent="space-between">

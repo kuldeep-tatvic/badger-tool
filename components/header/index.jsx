@@ -358,7 +358,7 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
                         </Stack>
                     </Stack>
                 </Box>
-            </Menu>
+            </r>
         </Box>
     );
 };
