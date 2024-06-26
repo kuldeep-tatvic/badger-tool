@@ -71,7 +71,7 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
     };
 
     // Filter out accounts with no properties
-    const filteredData = data.filter(account => Array.isArray(account.propertySummaries) && account.propertySummaries.length > 0);
+    const filteredData = data ? data.filter(account => Array.isArray(account.propertySummaries) && account.propertySummaries.length > 0) : [];
 
     return (
         <Box>
