@@ -1,14 +1,14 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import { Menu, Box, Stack, Typography, Divider, ListItem, ListItemText, ListItemIcon, IconButton, Button } from '@mui/material';
+import { Menu, Box, Stack, Typography, Divider, ListItemText, ListItemIcon, IconButton, Button } from '@mui/material';
 import { colors } from "constants/colors";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import toast from 'react-hot-toast';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight'; // Ensure you have imported this icon
-import CheckIcon from '@mui/icons-material/Check'; // Ensure you have imported this icon
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import CheckIcon from '@mui/icons-material/Check';
 
 const HeaderComponent = ({ onAccountHandler, data }) => {
 
@@ -40,7 +40,6 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
     };
 
     const handleAccountClick = (event, accountId) => {
-
         const account = data.find((account) => account.account === `accounts/${accountId}`);
 
         if (account) {
@@ -58,13 +57,10 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
             setAccountName(account.displayName);
             setPropertyName("")
 
-
             console.log("selected properties", properties);
-            // toast.success("Account selected");
         } else {
             console.log("Account not found");
             toast.error("Account not found");
-
         }
     };
 
@@ -73,6 +69,9 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
         setPropertyName(propertyName);
         console.log("on click property", propertyId);
     };
+
+    // Filter out accounts with no properties
+    const filteredData = data.filter(account => Array.isArray(account.propertySummaries) && account.propertySummaries.length > 0);
 
     return (
         <Box>
@@ -282,7 +281,7 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
 
                             }}>
                                 {
-                                    data?.map((item) => {
+                                    filteredData.map((item) => {
                                         const accountIdd = item.account.split('/')[1];
                                         return (
                                             <Button
@@ -327,7 +326,7 @@ const HeaderComponent = ({ onAccountHandler, data }) => {
                             >Properties & Apps</Typography>
 
                             {
-                                selectedProperties?.map((item) => {
+                                selectedProperties.map((item) => {
                                     const propertyIDD = item.property.split('/')[1];
                                     const propertyName = item.displayName;
                                     return (
