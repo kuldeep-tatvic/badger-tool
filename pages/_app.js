@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { CookiesProvider } from "react-cookie";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { SessionProvider } from "next-auth/react";
-
+import { Toaster } from 'react-hot-toast';
 
 // MUI
 import CssBaseline from "@mui/material/CssBaseline";
@@ -20,6 +20,8 @@ import Head from "next/head";
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter();
   const initialRenderRef = useRef(true);
+
+  // For the use of React-Query
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -57,6 +59,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
             </Head>
             <ErrorBoundary>
               <AuthenticatedComponent Component={Component} pageProps={pageProps} />
+              <Toaster position='bottom-center' />
             </ErrorBoundary>
           </SessionProvider>
         </QueryClientProvider>

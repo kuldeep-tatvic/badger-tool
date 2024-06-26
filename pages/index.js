@@ -4,15 +4,13 @@ import React, { useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-
-
-
 const Home = () => {
 
   const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
+
     if (session) {
       console.log("session_googlee_1", session);
       router.push("/dashboard");
@@ -31,7 +29,9 @@ const Home = () => {
         maxWidth: "none", // or any value you prefer
       },
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
+      paddingLeft: 0,
+      paddingRight: 0
     }}>
 
       <Box sx={{
